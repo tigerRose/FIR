@@ -7,6 +7,7 @@ import pygame
 from pygame.locals import *
 
 from util import connected_domain
+from util import five_in_a_row
 
 class CheckerBoard(object):
     """ A class that draw a checker board in memory """
@@ -104,7 +105,7 @@ class CheckerBoard(object):
                 rtn = self.check_gameover()
                 self.do_if_gameover(rtn)
 
-                time.sleep(random.uniform(0.5,2))
+                time.sleep(random.uniform(0.5,1))
                 pygame.draw.circle(self.screen, white, self.machine_down_real[-1], self.grid_witdh/2-1, 0)
                 delay_draw = False
                 pygame.display.update()
@@ -164,19 +165,30 @@ class CheckerBoard(object):
                 return True
 
     def find_five_in_a_row(self, points):
+        # First version
+        # return True if there are five points
+        """
         if len(points) < 5:
+            return False
+        else:
+            return True
+        """
+
+        # Second version
+        # find five point in a row
+        if five_in_a_row(points) is None:
             return False
         else:
             return True
 
 
     def do_if_gameover(self, rtn):
-        black = 0,0,0
+        color = 255,255,255
         if rtn == 0:
             pass
         else:
             myfont = pygame.font.Font(None, 70)
-            textImage = myfont.render("Game Over", True, black)
+            textImage = myfont.render("Game Over", True, color)
             self.screen.blit(textImage, (self.length/3, self.width/3))
             pygame.display.update()
             time.sleep(3)
